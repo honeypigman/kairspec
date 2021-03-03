@@ -1,0 +1,38 @@
+{
+    "id":"SCOA0902",
+    "url":"http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc",    
+    "ename":"getCtprvnRltmMesureDnsty",
+    "operation":"getMsrstnAcctoRltmMesureDnsty",
+    "req":{
+        "serviceKey":{
+            "len":"999",
+            "val":"-",
+            "des":"서비스키"
+        },
+        "numOfRows":{
+            "len":"4",
+            "val":"1",
+            "des":"한 페이지 결과 수"
+        },
+        "pageNo":{
+            "len":"4",
+            "val":"1",
+            "des":"페이지 번호"
+        },
+        "stationName":{
+            "len":"10",
+            "val":"금천구",
+            "des":"측정소 이름"
+        },
+        "dataTerm":{
+            "len":"10",
+            "val":"DAILY",
+            "des":"요청 데이터기간(1일: DAILY, 1개월: MONTH, 3개월: 3MONTH)"
+        },
+        "ver":{
+            "len":"4",
+            "val":"1.3",
+            "des":"버전"
+        }
+    }
+}

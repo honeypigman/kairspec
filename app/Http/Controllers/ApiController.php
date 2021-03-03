@@ -27,26 +27,9 @@ class ApiController extends Controller
         return view('index');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index($type='json')
-    {
-        $result = Api::orderBy('reqdate', 'desc')->get();        
-
-        if($type=='json'){
-            return $result = $result->toJson(JSON_UNESCAPED_UNICODE);
-        }else{
-            return $result = $result->toArray();
-        }
-    }
-
     public function setForm(Request $reqeust, $api_code)
     {
-        $_DATA = Form::getData($api_code);        
-        $_DATA['req']['serviceKey']['val'] = env('API_KEY');
+        $_DATA = Form::getData($api_code);
         return view('api/layout')->with('result', $_DATA);
     }
 
@@ -72,6 +55,22 @@ class ApiController extends Controller
         $this->store($request, $result);
 
         return $result;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index($type='json')
+    {
+        $result = Api::orderBy('reqdate', 'desc')->get();        
+
+        if($type=='json'){
+            return $result = $result->toJson(JSON_UNESCAPED_UNICODE);
+        }else{
+            return $result = $result->toArray();
+        }
     }
 
     /**

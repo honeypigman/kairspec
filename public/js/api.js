@@ -7,6 +7,13 @@ $(document).ready(function(){
     // Init
     //submit('list', 'GET', 'array');
 
+
+    $("#operation").on('change', function(){
+        console.log(1);
+        $("div[id^='setForm_']").addClass('d-none');
+        $("#setForm_"+$(this).val()).removeClass('d-none');
+    });
+
     $("#send").on('click', function(){
 
         var formData = $("#form").serializeObject();

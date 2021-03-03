@@ -97,4 +97,21 @@ class Func
             Func::setRecords($tbl, $_DATA)
         ]);
     }
+
+    /**
+     * set Select Form
+     *  PARAM[1] : set Name
+     *  PARAM[2] : set Array
+     */
+    static function select($name, $array){
+
+        $result = "<select class='form-select' aria-label='Default select example' name='".$name."' id='".$name."'>";
+        $result.= "<option value=''>- Make a Choice -</option>";
+        foreach( $array as $k=>$v ){
+            $result.= "<option value='".$k."'>".$v."::".$k."</option>";
+        }
+        $result.= "</select>";
+
+        return $result;
+    }
 }

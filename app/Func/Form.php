@@ -19,6 +19,35 @@ class Form extends Eloquent
     static function getData($api_code, $isArray=1){
 
         $arr = json_decode(file_get_contents('storage/form/'.$api_code.'.json'), $isArray);
+        // Set - Code
+        $arr = Form::setCode($arr);
+        // Set - ApiKey
+        $arr['spec']['apikey'] = env('API_KEY');
+
+        return $arr;
+    }
+
+     /**
+     * Json Set Array
+     *  - API 별 Json 기준 코드 항목 셋팅
+     *  PARAM[1] : setData
+     */
+    static function setCode($arr){
+
+        if(empty($arr['api'])){
+            abort(404);
+        }
+
+        switch($arr['api']){
+            // K-AirSpec
+            //  - Operation
+            case 'kairspec':
+                foreach($arr['spec']['operation'] as $k=>$v){
+                    $arr['code']['operation'][$k]=$v['title'];
+                }                
+                break;
+        }
+
 
         return $arr;
     }
