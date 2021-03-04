@@ -106,7 +106,7 @@ class Func
     static function select($name, $array){
 
         $result = "<select class='form-select' aria-label='Default select example' name='".$name."' id='".$name."'>";
-        $result.= "<option value=''>- Make a Choice -</option>";
+        $result.= "<option value=''> - Make a Choice - </option>";
         foreach( $array as $k=>$v ){
             $result.= "<option value='".$k."'>".$v."::".$k."</option>";
         }

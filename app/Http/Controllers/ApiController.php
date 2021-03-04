@@ -36,9 +36,23 @@ class ApiController extends Controller
     public function send(Request $request)
     {
         $_DATA = Func::requestToData($request);
-        $query_string = Form::setQueryString($_DATA);
-        $url = $_DATA['uri']."/".$_DATA['operation']."?".$query_string;
+        $url = Form::getReqUrl($_DATA);
+        $result = $this->curl($url);
+        $isSave = true;
 
+        // DB Save
+        if($isSave){
+            $this->store($_DATA['setDatabase'], $result);
+        }
+
+        return $result;
+    }
+
+    public function curl($url)
+    {
+        if(empty($url)){
+            abort(404);
+        }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 0);
@@ -50,9 +64,6 @@ class ApiController extends Controller
 
         // Xml To Json
         $result = Form::xmlToJson($result);
-
-        // DB Save
-        $this->store($request, $result);
 
         return $result;
     }
@@ -89,7 +100,7 @@ class ApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $result=null)
+    public function store($db, $result=null)
     {
         if($result){
             $custom = "";
@@ -104,10 +115,9 @@ class ApiController extends Controller
             }
             $custom = json_encode($_CUST, JSON_UNESCAPED_UNICODE);
         }
-
-        $_DATA = Func::requestToData($request);
+        
         $api = new Api();
-        $api->setCollection($_DATA['operation']);
+        $api->setCollection($db);
         $api->reqdate = date('Y-m-d H:i:s');
         $api->origin = $result;
         $api->custom = $custom;

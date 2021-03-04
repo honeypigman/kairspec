@@ -21,8 +21,6 @@ class Form extends Eloquent
         $arr = json_decode(file_get_contents('storage/form/'.$api_code.'.json'), $isArray);
         // Set - Code
         $arr = Form::setCode($arr);
-        // Set - ApiKey
-        $arr['spec']['apikey'] = env('API_KEY');
 
         return $arr;
     }
@@ -44,7 +42,8 @@ class Form extends Eloquent
             case 'kairspec':
                 foreach($arr['spec']['operation'] as $k=>$v){
                     $arr['code']['operation'][$k]=$v['title'];
-                }                
+                    $arr['spec']['operation'][$k]['req']['serviceKey']['val']=env('API_KEY');
+                }
                 break;
         }
 
@@ -53,10 +52,22 @@ class Form extends Eloquent
     }
 
     /**
+     * set Request Url
+     *  PARAM[1] : array
+     */
+    static function getReqUrl($array){
+        $url = "";
+        $query_string = Form::setQueryString($array);
+        $url = $array['uri'] ."?".$query_string;
+
+        return $url;
+    }
+
+    /**
      * set Query String
      *  PARAM[1] : Array
      */
-    static function setQueryString($array){
+    static function setQueryString($array){        
         $query_string="";
         foreach($array['data'] as $name=>$data){
             $query_string.=$name."=".$data."&";

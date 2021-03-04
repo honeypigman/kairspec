@@ -7,16 +7,44 @@ $(document).ready(function(){
     // Init
     //submit('list', 'GET', 'array');
 
-
+    // Operation Setting
     $("#operation").on('change', function(){
-        console.log(1);
+        $("#resBody").empty().html('<span class="text-secondary">The data does not exist.</span>');
+
+        var operation = $(this).val();
         $("div[id^='setForm_']").addClass('d-none');
-        $("#setForm_"+$(this).val()).removeClass('d-none');
+        $("#setForm_"+operation).removeClass('d-none');
+        
+        // Set Uri
+        var getUri = $("#"+operation+"Form [id='uri']").val();
+        $("#"+operation+"Form [id='uri']").val(getUri+'/'+operation);
     });
 
+
+    // 
     $("#send").on('click', function(){
 
+        var api = $("#api").text();
         var formData = $("#form").serializeObject();
+
+        if( api=='kairspec' ){
+            var operation = $("#operation").val();
+            if(!operation){
+                alert('Warn> Make a choice [Operation]');
+                $("#operation").focus();
+                return false;
+            }
+            // 초기화 설정
+            $('#setDatabase').remove();
+            $('<input>').attr({
+                type: 'hidden',
+                id: 'setDatabase',
+                name: 'setDatabase',
+                value:operation
+            }).appendTo($("#"+operation+"Form"));
+            formData = $("#"+operation+"Form").serializeObject();
+        }
+        
         $.ajax({
             method:"POST",
             url:"/send",
@@ -27,27 +55,31 @@ $(document).ready(function(){
             data:(formData),
             success : function(rs){
 
-                console.log(rs);
-
                 var result = rs.header['resultCode'];
                 var msg = rs.header['resultMsg'];
                 var rows = rs.body['numOfRows'];
 
                 if(result == '00'){
 
+                    console.log(rs.body['items'][['item']]);
+
                     cnt=0;
                     resResult = "";
-                    $.each(rs.body['items'][['item']], function(k, v){               
-                        if ( rows>1 ){
-                            $.each(v, function(k, v){
-                                console.log(k);
-                                resResult+=setResForm(cnt, k, v);
-                            });
-                        }else{
-                            resResult+=setResForm(cnt, k, v);                                                 
-                        }
-                        cnt++;
-                    });                
+
+                    if( api=='kairspec' ){
+                        $.each(rs.body['items'][['item']], function(k, v){               
+                            if ( rows>1 ){
+                                $.each(v, function(k, v){
+                                    console.log(k);
+                                    resResult+=setResForm(cnt, k, v);
+                                });
+                            }else{
+                                resResult+=setResForm(cnt, k, v);                                                 
+                            }
+                            cnt++;
+                        });
+                    }
+
                     $("#resBody").empty().append(resResult);
 
                 }else{

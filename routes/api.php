@@ -18,4 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// K-AirSpec
+//  - /req/kairspec/[operation]/[bas64_string_data]
+//Route::get('/req/{api}/{cmd}/{bas64_string_data}', 'ApiController@req')->name('api.req');
 Route::get('/list/{type}', 'ApiController@index')->name('api.index');

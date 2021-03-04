@@ -9,7 +9,7 @@
 
   <!-- Apicode Info //-->
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <button type="button" class="btn btn-outline-dark">{{ $result['api'] }}</button>
+    <button type="button" class="btn btn-outline-dark" id="api">{{ $result['api'] }}</button>
       {{ $result['spec']['id'] }} - {{ $result['spec']['serviceName'] }}
     <span class="text-end">
       <button type="button" class="btn btn-primary btn-sm" id="send">SEND</button>
@@ -20,25 +20,17 @@
   <!-- CSRF-TOKEN //-->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <p>
-    <form id="form" method="POST">
-    @csrf
     <ul class="nav nav-tabs">
       <li class="nav-item">
         <a class="nav-link bg-muted active" aria-current="page" href="#">Req</a>
       </li>
     </ul>
     @if(!empty($result['spec']))
-        <div class="mt-2 row">
-          <label class="col-sm-2 col-form-label">URI</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext text-secondary" name="uri" value="{{ $result['spec']['url'] }}" readOnly>
-          </div>
-        </div>
         <!-- 
           Api별 코드분기
          -->
         @if( $result['api'] == 'kairspec' )
-          <div class="row">
+          <div class="row mt-2">
             <label class="col-sm-2 col-form-label">Operation</label>
             <div class="col-sm-10">
               {!! Func::select('operation', $result['code']['operation']) !!}
@@ -46,10 +38,18 @@
 
             <div id="reqBody" class="row text-center">
             @foreach($result['spec']['operation'] as $operation=>$segment)
+            <form id="{{ $operation }}Form" method="POST">
+            @csrf
               <div id="setForm_{{ $operation }}" class="d-none">
               <hr class="mt-3">
+              <div class="row mt-2">
+                <label class="col-sm-2 col-form-label">URI</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control-plaintext text-secondary" name="uri" id="uri" value="{{ $result['spec']['url'] }}" readOnly>
+                </div>
+              </div>
               @foreach($segment['req'] as $name=>$data)
-                <div class="mt-2 row">
+                <div class="row mt-2">
                   <label class="col-sm-2 col-form-label">{{ $name }}</label>
                   <div class="col-sm-3">
                     <input type="text" class="form-control" id="{{ strtolower($name) }}" name="data[{{ ($name) }}]" maxlength="{{ $data['len'] }}" value="{{ $data['val'] }}" @if($name=='ServiceKey') readOnly @endif>
@@ -60,6 +60,7 @@
                 </div>
               @endforeach
               </div>
+            </form>
             @endforeach
           </div>
           </div>
