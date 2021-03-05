@@ -19,7 +19,7 @@
 - [ ] 기능 - RestAPI 형태의 공통인터페이스 작성
 - [ ] 기능 - 전문별 데이터 적재 세분화
 - [ ] 기능 - 측정소별 통계
-- [ ] 기능 - 측정소의 가장 최신 데이터 (1시간 단위)만 사용
+- [ ] 기능 - 측정소 데이터 획득방안 협의
 
 ## How to Use
 > 1) 프로젝트 경로로 이동
@@ -106,6 +106,7 @@
 - Bootstrap v5
 - NoSQL - MongoDB
 - Laravel - MongoDB [laravel-mongodb#query-builder](https://github.com/jenssegers/laravel-mongodb#query-builder).
+- Flip Card Animation Css @cjcu
 
 ## License
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

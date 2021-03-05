@@ -1,38 +1,90 @@
 {
-    "id":"SCOA0902",
-    "url":"http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc",    
-    "ename":"getCtprvnRltmMesureDnsty",
-    "operation":"getMsrstnAcctoRltmMesureDnsty",
-    "req":{
-        "serviceKey":{
-            "len":"999",
-            "val":"-",
-            "des":"서비스키"
-        },
-        "numOfRows":{
-            "len":"4",
-            "val":"1",
-            "des":"한 페이지 결과 수"
-        },
-        "pageNo":{
-            "len":"4",
-            "val":"1",
-            "des":"페이지 번호"
-        },
-        "stationName":{
-            "len":"10",
-            "val":"금천구",
-            "des":"측정소 이름"
-        },
-        "dataTerm":{
-            "len":"10",
-            "val":"DAILY",
-            "des":"요청 데이터기간(1일: DAILY, 1개월: MONTH, 3개월: 3MONTH)"
-        },
-        "ver":{
-            "len":"4",
-            "val":"1.3",
-            "des":"버전"
+    "api":"kairspec",
+    "spec":{
+        "id":"SCOA0901",
+        "serviceName":"MsrstnInfoInqireSvc",
+        "url":"http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc",    
+        "operation":{
+            "getNearbyMsrstnList":{
+                "title":"측정소정보 조회",
+                "req":{
+                    "serviceKey":{
+                        "len":"999",
+                        "val":"-",
+                        "des":"서비스키"
+                    },
+                    "tmX":{
+                        "len":"25",
+                        "val":"16.6",
+                        "des":"TM측정방식 X좌표"
+                    },
+                    "tmY":{
+                        "len":"25",
+                        "val":"16.6",
+                        "des":"TM측정방식 Y좌표"
+                    },
+                    "ver":{
+                        "len":"4",
+                        "val":"1.0",
+                        "des":"버전 미 포함시 TM좌표 기준 가까운 측정소 표출하고 1.0 호출시 도로명주소검색 API 좌표로 가까운 측정소 표출"
+                    }
+                }
+            },
+            "getMsrstnList":{
+                "title":"측정소목록 조회",
+                "req":{
+                    "serviceKey":{
+                        "len":"999",
+                        "val":"-",
+                        "des":"서비스키"
+                    },
+                    "numOfRows":{
+                        "len":"4",
+                        "val":"1",
+                        "des":"한 페이지 결과 수"
+                    },
+                    "pageNo":{
+                        "len":"4",
+                        "val":"1",
+                        "des":"페이지 번호"
+                    },
+                    "addr":{
+                        "len":"100",
+                        "val":"서울",
+                        "des":"주소"
+                    },
+                    "stationName":{
+                        "len":"10",
+                        "val":"금천구",
+                        "des":"측정소 이름"
+                    }
+                }
+            },
+            "getTMStdrCrdnt":{
+                "title":"TM 기준좌표 조회",
+                "req":{
+                    "serviceKey":{
+                        "len":"999",
+                        "val":"-",
+                        "des":"서비스키"
+                    },
+                    "numOfRows":{
+                        "len":"4",
+                        "val":"9999",
+                        "des":"한 페이지 결과 수 (반복돌리기때문에 Max로 설정)"
+                    },
+                    "pageNo":{
+                        "len":"4",
+                        "val":"1",
+                        "des":"페이지 번호"
+                    },
+                    "umdName":{
+                        "len":"100",
+                        "val":"구로동",
+                        "des":"읍면동명"
+                    }
+                }
+            }
         }
     }
 }

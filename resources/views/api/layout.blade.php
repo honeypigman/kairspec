@@ -6,13 +6,23 @@
 //-->
 @extends('layout/header')
 @section('content')
-
   <!-- Apicode Info //-->
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <button type="button" class="btn btn-outline-dark" id="api">{{ $result['api'] }}</button>
-      {{ $result['spec']['id'] }} - {{ $result['spec']['serviceName'] }}
+
+  <div class="flip-card">   
+    <div class="flip-card-inner">
+      <div class="flip-card-front">         
+        <button type="button" class="btn btn-outline-dark" id="api">{{ $result['api'] }}</button>
+      </div>
+      <div class="flip-card-back">         
+        <button type="button" class="btn btn-outline-primary" id="api">{{ $result['api'] }}</button>
+      </div>   
+    </div>
+  </div>
+
+    <span><span id="api_id">{{ $result['spec']['id'] }}</span> - <span id="svc_name">{{ $result['spec']['serviceName'] }}</span></span>
     <span class="text-end">
-      <button type="button" class="btn btn-primary btn-sm" id="send">SEND</button>
+      <button type="button" class="btn btn-primary btn-sm" id="btnSend">SEND</button>
     </span>
   </div>
 
@@ -46,6 +56,7 @@
                 <label class="col-sm-2 col-form-label">URI</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control-plaintext text-secondary" name="uri" id="uri" value="{{ $result['spec']['url'] }}" readOnly>
+                  <input type="hidden" name="setUri" id="setUri" value="" readOnly>
                 </div>
               </div>
               @foreach($segment['req'] as $name=>$data)

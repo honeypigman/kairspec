@@ -13,6 +13,7 @@
     <title>{{ env('APP_NAME') }}</title>
     <script src="/js/jquery.min.js"></script>
     <link href="{{ mix('/css/common.css') }}" rel="stylesheet">
+    <link href="/css/flip.css" rel="stylesheet">
       <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/">{{ env('APP_NAME') }}</a>
       <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

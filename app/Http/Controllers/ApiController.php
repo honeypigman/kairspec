@@ -110,21 +110,27 @@ class ApiController extends Controller
             $_ARR = json_decode($result, 1);
             $_CUST['resultCode']=$_ARR['header']['resultCode'];
             $_CUST['resultMsg']=$_ARR['header']['resultMsg'];
-            foreach($_ARR['body']['items'] as $k=>$datas){
-                $_CUST['data'][]=$datas;
-            }
-            $custom = json_encode($_CUST, JSON_UNESCAPED_UNICODE);
-        }
-        
-        $api = new Api();
-        $api->setCollection($db);
-        $api->reqdate = date('Y-m-d H:i:s');
-        $api->origin = $result;
-        $api->custom = $custom;
-        $api->save();
+            if(empty($_ARR['body'])){
+                $_RS['resultCode'] = $_CUST['resultCode'];
+                $_RS['resultMsg'] = $_CUST['resultMsg'];
 
-        $_RS['resultCode'] = "00";
-        $_RS['resultMsg'] = "Save Success";
+            }else{
+                foreach($_ARR['body']['items'] as $k=>$datas){
+                    $_CUST['data'][]=$datas;
+                }
+                $custom = json_encode($_CUST, JSON_UNESCAPED_UNICODE);
+
+                $api = new Api();
+                $api->setCollection($db);
+                $api->reqdate = date('Y-m-d H:i:s');
+                $api->origin = $result;
+                $api->custom = $custom;
+                $api->save();        
+
+                $_RS['resultCode'] = "00";
+                $_RS['resultMsg'] = "Save Success";
+            }
+        }
 
         return $_RS;
     }

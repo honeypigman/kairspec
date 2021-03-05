@@ -17,11 +17,9 @@ class Form extends Eloquent
      *  PARAM[2] : Json Return Data Array or Object
      */
     static function getData($api_code, $isArray=1){
-
         $arr = json_decode(file_get_contents('storage/form/'.$api_code.'.json'), $isArray);
         // Set - Code
         $arr = Form::setCode($arr);
-
         return $arr;
     }
 
@@ -42,7 +40,7 @@ class Form extends Eloquent
             case 'kairspec':
                 foreach($arr['spec']['operation'] as $k=>$v){
                     $arr['code']['operation'][$k]=$v['title'];
-                    $arr['spec']['operation'][$k]['req']['serviceKey']['val']=env('API_KEY');
+                    $arr['spec']['operation'][$k]['req']['serviceKey']['val']=env('API_KEY'."_".strtoupper($arr['api']));
                 }
                 break;
         }
@@ -58,7 +56,7 @@ class Form extends Eloquent
     static function getReqUrl($array){
         $url = "";
         $query_string = Form::setQueryString($array);
-        $url = $array['uri'] ."?".$query_string;
+        $url = $array['setUri'] ."?".$query_string;
 
         return $url;
     }
@@ -70,7 +68,9 @@ class Form extends Eloquent
     static function setQueryString($array){        
         $query_string="";
         foreach($array['data'] as $name=>$data){
-            $query_string.=$name."=".$data."&";
+            if(!empty($data)){
+                $query_string.=$name."=".$data."&";
+            }
         }
         return substr($query_string,0,-1);;
     }
