@@ -13,8 +13,9 @@
 - [X] MongoDB설치 및 설정
 - [X] 카테고리 - 전문별 요청/응답 화면구현
 - [X] 카테고리 - 전문별 데이터 적재내역
-- [ ] 카테고리 - 지도 마커
-- [ ] 카테고리 - 매트릭스 8단계 구현 ( 한국기준 / WHO기준 )
+- [X] 기능 - 지도 API선정 :: 네이버 API활용
+- [ ] 기능 - 지도 마커 표기
+- [ ] 기능 - 매트릭스 8단계 구현 ( 한국기준 / WHO기준 )
 - [X] 기능 - Operatio에 따른 전문송수신 공통화
 - [ ] 기능 - RestAPI 형태의 공통인터페이스 작성
 - [X] 기능 - 전문별 데이터 적재 세분화
@@ -107,6 +108,7 @@
 - NoSQL - MongoDB
 - Laravel - MongoDB [laravel-mongodb#query-builder](https://github.com/jenssegers/laravel-mongodb#query-builder).
 - Flip Card Animation Css @cjcu
+- API - [Naver Maps](https://github.com/navermaps/maps.js.ncp/blob/master/examples/map/1-map-simple.html).
 
 ## License
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

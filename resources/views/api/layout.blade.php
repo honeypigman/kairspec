@@ -8,17 +8,16 @@
 @section('content')
   <!-- Apicode Info //-->
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-
-  <div class="flip-card">   
-    <div class="flip-card-inner">
-      <div class="flip-card-front">         
-        <button type="button" class="btn btn-outline-dark" id="api">{{ $result['api'] }}</button>
+    <div class="flip-card">   
+      <div class="flip-card-inner">
+        <div class="flip-card-front">         
+          <button type="button" class="btn btn-outline-dark" id="api">{{ $result['api'] }}</button>
+        </div>
+        <div class="flip-card-back">         
+          <button type="button" class="btn btn-outline-primary" id="api">{{ $result['api'] }}</button>
+        </div>   
       </div>
-      <div class="flip-card-back">         
-        <button type="button" class="btn btn-outline-primary" id="api">{{ $result['api'] }}</button>
-      </div>   
     </div>
-  </div>
 
     <span><span id="api_id">{{ $result['spec']['id'] }}</span> - <span id="svc_name">{{ $result['spec']['serviceName'] }}</span></span>
     <span class="text-end">
@@ -107,7 +106,8 @@
 
 <!-- Script Push -->
 @push('scripts')
-    <script src="{{ mix('/js/api.js') }} "></script>
+    <!-- <script src="{{ mix('/js/api.js') }} "></script> -->
+    <script src="/js/kairspec.js"></script>
 @endpush
 
 @endsection 

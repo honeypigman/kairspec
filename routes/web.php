@@ -21,4 +21,4 @@ use App\Func\Board;
 Route::get('/', 'ApiController@main');
 Route::get('/api/{api_code}', 'ApiController@setForm');
 Route::post('/send', 'ApiController@send');
-//Route::get('/show', 'ApiController@show');
+Route::get('/map/{api}', 'MapController@index');
