@@ -17,3 +17,7 @@ mix.styles([
     'resources/assets/css/chacha.css',
     'resources/assets/css/dashboard.css'
 ], 'public/css/common.css').version();
+
+mix.scripts([
+    'resources/assets/js/API.js',
+], 'public/js/api.js').version();

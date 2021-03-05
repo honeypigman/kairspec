@@ -105,4 +105,9 @@
     </div>
   </p>
 
+<!-- Script Push -->
+@push('scripts')
+    <script src="{{ mix('/js/api.js') }} "></script>
+@endpush
+
 @endsection 
