@@ -82,17 +82,40 @@
     var mapDiv = document.getElementById('map');
     
     var map = new naver.maps.Map(mapDiv, {
-      center: new naver.maps.LatLng(37.3595704, 127.105399),
+      center: new naver.maps.LatLng(37.572025, 127.005028),
       //center: naver.maps.TransCoord.fromUTMKToTM128(189732.07095, 443575.073582),
       // min:6
-      zoom: 7
+      zoom: 8
     });
 
-    var marker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(37.3595704, 127.105399),
-      //position: new naver.maps.TransCoord.fromUTMKToTM128(189732.07095, 443575.073582),
-      map: map
-    });
+    addMarker(37.572025, 127.005028, 'happy');
+    addMarker(37.584953, 127.094283, 'sad');
+
+    // var marker = new naver.maps.Marker({
+    //   position: new naver.maps.LatLng(37.572025, 127.005028),
+    //   //position: new naver.maps.TransCoord.fromUTMKToTM128(189732.07095, 443575.073582),
+    //   map: map
+    // });
+    
+
+    function addMarker(y, x, emoticon) 
+    {
+      var position = new naver.maps.LatLng(y, x);
+      var markerOptions = // new naver.maps.Marker(
+          {
+              position: position,
+              icon: 
+              {
+                  url: '/img/emoticon/'+emoticon+'.png',
+                  size: new naver.maps.Size(34, 35),
+                  origin: new naver.maps.Point(0, 0),
+                  anchor: new naver.maps.Point(11, 34)
+              }
+          };
+          
+          var marker = new naver.maps.Marker(markerOptions);
+          marker.setMap(map);
+    }
     
   </script>
   <!-- Naver Api Maps End -->
