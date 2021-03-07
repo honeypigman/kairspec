@@ -18,6 +18,7 @@
 - [ ] 기능 - 지도 마커 표기
 - getMsrstnList 측정소 목록록 데이터 응답받아 받아 dmXY 값을 기준으로 마커 표기
 - 응답 데이터는 커스터마이징하여, 별도 콜렉션에 저장하여 활용하며 해당 콜렉션은 주기별로 최신화하여 적재
+- [ ] 기능 - 전체측정소 데이터 스케쥴러 작성
 - [ ] 기능 - 매트릭스 8단계 구현 ( 한국기준 / WHO기준 )
 - [X] 기능 - Operatio에 따른 전문송수신 공통화
 - [ ] 기능 - RestAPI 형태의 공통인터페이스 작성
@@ -103,6 +104,15 @@
 > ; Enable mongodb extension module
 > extension=mongodb.so
 > ```
+>9) 스케쥴러 등록 [라라벨7::스케쥴러](https://laravel.kr/docs/7.x/scheduling).
+> App\Console\Kernel 의 schedule 메소드에서 모든 스케줄된 작업 정의.
+> \App\Jobs 내 Job을 생성하여, 스케줄링 하여 배치 등록
+> 
+> 작업스케쥴러 등록
+> ```php
+> * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+> ```
+
 ## Based on following plugins or services
 - RestAPI
 - PHP v7

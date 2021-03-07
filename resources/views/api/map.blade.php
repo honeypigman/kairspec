@@ -88,8 +88,8 @@
       zoom: 8
     });
 
-    addMarker(37.572025, 127.005028, 'happy');
-    addMarker(37.584953, 127.094283, 'sad');
+    addMarker(37.572025, 127.005028, 'blue');
+    addMarker(37.584953, 127.094283, 'gray');
 
     // var marker = new naver.maps.Marker({
     //   position: new naver.maps.LatLng(37.572025, 127.005028),
@@ -98,7 +98,7 @@
     // });
     
 
-    function addMarker(y, x, emoticon) 
+    function addMarker(y, x, icon) 
     {
       var position = new naver.maps.LatLng(y, x);
       var markerOptions = // new naver.maps.Marker(
@@ -106,10 +106,10 @@
               position: position,
               icon: 
               {
-                  url: '/img/emoticon/'+emoticon+'.png',
-                  size: new naver.maps.Size(34, 35),
+                  url: '/img/'+icon+'.png',
+                  size: new naver.maps.Size(25, 25),
                   origin: new naver.maps.Point(0, 0),
-                  anchor: new naver.maps.Point(11, 34)
+                  anchor: new naver.maps.Point(11, 25)
               }
           };
           
