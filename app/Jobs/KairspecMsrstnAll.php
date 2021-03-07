@@ -39,11 +39,17 @@ class KairspecMsrstnAll implements ShouldQueue
         // Api 조회
         // 시도내역 - 서울, 부산, 대구, 인천, 광주, 대전, 울산, 경기, 강원, 충북, 충남, 전북, 전남, 경북, 경남, 제주, 세종       
         $_SIDO = Array(
-            "서울", "부산", "대구", "인천", "광주", "대전", "울산", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주", "세종"
+            "서울", "부산", "대구", "인천", "광주", "대전", "울산", "경기", 
+            "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주", "세종"
         );
 
-        foreach( $_SIDO as $name ){
+        foreach( $_SIDO as $k=>$name ){
             usleep(3000);
+
+            // 시도내역을 한번에 땡길 경우, 충북까지만 응답받고 트래픽 이슈로 중단되어 경기까지 응답 후 1분 지연
+            if($k==8){
+                sleep(60);
+            }
             $_DATA['uri'] = "http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc";
             $_DATA['setUri'] = "http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc/getMsrstnList";
             $_DATA['data'] = Array(
