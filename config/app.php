@@ -229,8 +229,7 @@ return [
 
         // User Custom
         'Func' => App\Func\Func::class,
-        'Form' => App\Func\Form::class,
-        'Api' => App\Func\Api::class,
+        'Form' => App\Func\Form::class
     ],
 
 ];

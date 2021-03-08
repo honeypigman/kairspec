@@ -6,7 +6,6 @@
 //-->
 @extends('layout/header')
 @section('content')
-
 <style>
   /**
   *   Feather icon Size
@@ -82,22 +81,12 @@
     var mapDiv = document.getElementById('map');
     
     var map = new naver.maps.Map(mapDiv, {
-      center: new naver.maps.LatLng(37.572025, 127.005028),
+      center: new naver.maps.LatLng(37.15188074771007, 127.6117328582013),
       //center: naver.maps.TransCoord.fromUTMKToTM128(189732.07095, 443575.073582),
       // min:6
-      zoom: 8
+      zoom: 7
     });
-
-    addMarker(37.572025, 127.005028, 'blue');
-    addMarker(37.584953, 127.094283, 'gray');
-
-    // var marker = new naver.maps.Marker({
-    //   position: new naver.maps.LatLng(37.572025, 127.005028),
-    //   //position: new naver.maps.TransCoord.fromUTMKToTM128(189732.07095, 443575.073582),
-    //   map: map
-    // });
     
-
     function addMarker(y, x, icon) 
     {
       var position = new naver.maps.LatLng(y, x);
@@ -116,6 +105,17 @@
           var marker = new naver.maps.Marker(markerOptions);
           marker.setMap(map);
     }
+
+    // Create Marker 
+    @foreach( $marker as $stationName => $datas )
+      addMarker({{ $datas['dmX'] }}, {{ $datas['dmY'] }}, 'blue');
+    @endforeach
+    
+    // var marker = new naver.maps.Marker({
+    //   position: new naver.maps.LatLng(37.572025, 127.005028),
+    //   //position: new naver.maps.TransCoord.fromUTMKToTM128(189732.07095, 443575.073582),
+    //   map: map
+    // });
     
   </script>
   <!-- Naver Api Maps End -->

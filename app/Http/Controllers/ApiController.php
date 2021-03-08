@@ -12,7 +12,7 @@ use App\Http\Resources\ApiResource;
 use DB;
 use Func;
 use Form;
-use Api;
+use App\KairspecApiHis;
 
 class ApiController extends Controller
 {
@@ -23,6 +23,7 @@ class ApiController extends Controller
      */
     public function main()
     {
+        // Index
         $this->index();
         return view('index');
     }
@@ -42,7 +43,7 @@ class ApiController extends Controller
 
         // DB Save
         if($isSave){
-            $this->store($_DATA['setDatabase'], $result);
+            $this->store($result, $_DATA['setOperation']);
         }
 
         return $result;
@@ -75,7 +76,7 @@ class ApiController extends Controller
      */
     public function index($type='json')
     {
-        $result = Api::orderBy('reqdate', 'desc')->get();        
+        $result = KairspecApiHis::orderBy('reqdate', 'desc')->get();        
 
         if($type=='json'){
             return $result = $result->toJson(JSON_UNESCAPED_UNICODE);
@@ -100,7 +101,7 @@ class ApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($db, $result=null)
+    public function store($result=null, $operation)
     {
         if($result){
             $custom = "";
@@ -120,9 +121,9 @@ class ApiController extends Controller
                 }
                 $custom = json_encode($_CUST, JSON_UNESCAPED_UNICODE);
 
-                $api = new Api();
-                $api->setCollection($db);
+                $api = new KairspecApiHis();
                 $api->reqdate = date('Y-m-d H:i:s');
+                $api->operation = $operation;
                 $api->origin = $result;
                 $api->custom = $custom;
                 $api->save();        

@@ -49,11 +49,11 @@ var send = function(){
             return false;
         }
         // 초기화 설정
-        $('#setDatabase').remove();
+        $('#setOperation').remove();
         $('<input>').attr({
             type: 'hidden',
-            id: 'setDatabase',
-            name: 'setDatabase',
+            id: 'setOperation',
+            name: 'setOperation',
             value:operation
         }).appendTo($("#"+operation+"Form"));
         formData = $("#"+operation+"Form").serializeObject();

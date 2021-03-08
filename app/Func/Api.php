@@ -10,7 +10,7 @@ class Api extends Eloquent
     protected $collection = 'getMsrstnAcctoRltmMesureDnsty';
     protected $guarded = [];
 
-    function setCollection($collection){
+    static function setCollection($collection){
         $this->collection=$collection;
     }
 }
