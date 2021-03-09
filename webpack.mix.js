@@ -21,3 +21,7 @@ mix.styles([
 mix.scripts([
     'resources/assets/js/API.js',
 ], 'public/js/api.js').version();
+
+mix.scripts([
+    'resources/assets/js/MAP.js',
+], 'public/js/map.js').version();
