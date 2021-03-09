@@ -23,8 +23,9 @@
       height: 36px;
   }
 </style>
+<!-- Map Head -->
 
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <div class="flip-card">   
     <div class="flip-card-inner">
       <div class="flip-card-front">         
@@ -35,31 +36,24 @@
       </div>   
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- Map Body -->
-<div class="row">
-  <div class="col-12">
-    <div id="map" class="p-auto" style="width: 100%; height: 400px; position: relative; overflow: hidden;"></div>
+<div class="map">
+  <div class="col-12" style="padding:0px; margin:0px;">
+    <div id="map" class="p-auto" style="width: 100%; height:500px; position: relative; overflow: hidden;"></div>
   </div>
 </div>
 
 <!-- Map Footer -->
-<div class="row">
+<!-- <div class="row">
   <div class="accordion mt-3" id="accordionExample">
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingTwo">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          
-          <!-- smile -->
           <span data-feather="smile" class="text-primary feather-36"></span>
-
-          <!-- sad -->
           <span data-feather="frown" class="text-danger feather-36"></span>
-
-          <!-- uhmm -->
           <span data-feather="meh" class="feather-36"></span>
-
         </button>
       </h2>
       <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
@@ -69,8 +63,7 @@
       </div>
     </div>
   </div>
-</div>
-
+</div> -->
 
 <!-- Script Push -->
 @push('scripts')
@@ -81,10 +74,9 @@
     var mapDiv = document.getElementById('map');
     
     var map = new naver.maps.Map(mapDiv, {
-      center: new naver.maps.LatLng(37.15188074771007, 127.6117328582013),
+      center: new naver.maps.LatLng(37.572025, 127.005028),
       //center: naver.maps.TransCoord.fromUTMKToTM128(189732.07095, 443575.073582),
-      // min:6
-      zoom: 7
+      zoom: 6
     });
     
     function addMarker(y, x, icon) 

@@ -25,11 +25,14 @@
 
   <body class="text-center">
 
+    @if(Request::segment(1)=='map')
+      @yield('content')
+    @else
+      <div class="container-fluid">
+      <div class="row">
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        @yield('content')
+      </main>
+    @endif
 
-  <div class="container-fluid">
-  <div class="row">
-  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    @yield('content')
-  </main>
-  
   @include('layout.bottom')

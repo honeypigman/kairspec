@@ -16,6 +16,7 @@ use App\Http\Controllers\ApiController;
 use App\KairspecApiMsrstnAll;
 
 // 측정소 전체목록 내역 조회
+//  - 배치주기 : Daily
 class KairspecMsrstnAll implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -38,11 +39,6 @@ class KairspecMsrstnAll implements ShouldQueue
     public function handle()
     {
         // Api 조회
-        // 시도내역 - 서울, 부산, 대구, 인천, 광주, 대전, 울산, 경기, 강원, 충북, 충남, 전북, 전남, 경북, 경남, 제주, 세종       
-        // $_SIDO = Array(
-        //     "서울", "부산", "대구", "인천", "광주", "대전", "울산", "경기", 
-        //     "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주", "세종"
-        // );
         $_SIDO = Array(
             "서울", "부산", "대구", "인천", "광주", "대전", "울산", "경기",
             "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주", "세종"
@@ -50,12 +46,11 @@ class KairspecMsrstnAll implements ShouldQueue
 
         foreach( $_SIDO as $k=>$cityName ){
             usleep(3000);
-
             // 시도내역을 한번에 땡길 경우, 충북까지만 응답받고 트래픽 이슈로 중단되어 경기까지 응답 후 1분 지연
             if($k==8){
                 sleep(60);
             }
-
+            
             //  API - 측정소 전체 목록 조회
             $_DATA['uri'] = "http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc";
             $_DATA['setUri'] = "http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc/getMsrstnList";

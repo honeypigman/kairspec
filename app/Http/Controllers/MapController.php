@@ -7,7 +7,7 @@ use App\KairspecApiMsrstnAll;
 
 class MapController extends Controller
 {
-    public function index(Request $request, $api)
+    public function index(Request $request)
     {
         $today = date('Y-m-d');
         $list = KairspecApiMsrstnAll::where('today', '=', $today)
@@ -20,6 +20,6 @@ class MapController extends Controller
             $_MARKER[$datas['stationName']]['dmY'] = $datas['dmY'];
         }
 
-        return view('api/map')->with('api', $api)->with('marker', $_MARKER);
+        return view('map/index')->with('marker', $_MARKER);
     }
 }
