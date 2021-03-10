@@ -50,8 +50,11 @@ class KairspecMsrstnAll implements ShouldQueue
             if($k==8){
                 sleep(60);
             }
+
+            $today = date('Y-m-d');
+            $time = date('H:i:s');
             
-            //  API - 측정소 전체 목록 조회
+            //  API - 전체 측정소 목록 (KairspecMsrstnAll) - 시작
             $_DATA['uri'] = "http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc";
             $_DATA['setUri'] = "http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc/getMsrstnList";
             $_DATA['data'] = Array(
@@ -65,14 +68,12 @@ class KairspecMsrstnAll implements ShouldQueue
             $url = Form::getReqUrl($_DATA);
 
             Log::info('SCH KairspecMsrstnAll ['.$cityName.'] '.date('Ymd H:i:s'));
-            Log::info('Req>'.$url);
+            Log::info('SCH KairspecMsrstnAll ['.$cityName.'] Req>'.$url);
             $api = app(ApiController::class);
             $result = $api->curl($url);
-            Log::info('Res>'.$result);
+            Log::info('SCH KairspecMsrstnAll ['.$cityName.'] Res>'.$result);
             $_ARR = json_decode($result, 1);
 
-            $today = date('Y-m-d');
-            $time = date('H:i:s');
             foreach( $_ARR['body']['items'] as $item=>$datas ){
                 foreach($datas as $cols){
                     
@@ -119,7 +120,88 @@ class KairspecMsrstnAll implements ShouldQueue
                     }
                 }
             }
-            Log::info('Res>OK');
+            Log::info('SCH KairspecMsrstnAll ['.$cityName.'] Res>OK');
+            //  API - 전체 측정소 목록 (KairspecMsrstnAll) - 종료
+
+
+            if($k==8){
+                sleep(60);
+            }
+            //  API - 전체 측정소 목록 (KairspecCtprvnRltmMesureDnsty) - 시작
+            $_DATA['uri'] = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc";
+            $_DATA['setUri'] = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty";
+            $_DATA['data'] = Array(
+                "serviceKey"=>env('API_KEY_KAIRSPEC'),
+                "numOfRows"=>"9999",
+                "pageNo"=>"1",
+                "sidoName"=>$cityName,
+                "ver"=>"1.3"
+            );
+            $_DATA['setDatabase'] = "getCtprvnRltmMesureDnsty";
+            $url = Form::getReqUrl($_DATA);
+
+            Log::info('SCH KairspecCtprvnRltmMesureDnsty ['.$cityName.'] '.date('Ymd H:i:s'));
+            Log::info('SCH KairspecCtprvnRltmMesureDnsty ['.$cityName.'] Req>'.$url);
+            $api = app(ApiController::class);
+            $result = $api->curl($url);
+            Log::info('SCH KairspecCtprvnRltmMesureDnsty ['.$cityName.'] Res>'.$result);
+            $_ARR = json_decode($result, 1);
+
+            foreach( $_ARR['body']['items'] as $item=>$datas ){
+                foreach($datas as $cols){
+                    
+                    // today, city, stationName
+                    $obj = KairspecApiMsrstnAll::select('_id')
+                    ->where('city', '=', trim($cityName))
+                    ->where('today', '=', $today)
+                    ->where('stationName', '=', trim($cols['stationName']))
+                    ->orderBy('today', 'desc')
+                    ->take(1)
+                    ->get();
+
+                    // Collection ObjectId
+                    if(empty($obj[0]['_id'])){
+                        $oid=null;
+                    }else{
+                        $oid = $obj[0]['_id'];
+                    }
+              
+                    unset($api);
+                    if($oid){
+                        Log::info($oid." > ".$cityName."/".$today."/".$cols['stationName']);
+                        $api = KairspecApiMsrstnAll::find($oid);
+                        $api->time = $time;
+                        $api->mesure_time=$cols['dataTime'];
+                        $api->so2Value=$cols['so2Value'];
+                        $api->coValue=$cols['coValue'];
+                        $api->o3Value=$cols['o3Value'];
+                        $api->no2Value=$cols['no2Value'];
+                        $api->pm10Value=$cols['pm10Value'];
+                        $api->pm10Value24=$cols['pm10Value24'];
+                        $api->pm25Value=$cols['pm25Value'];
+                        $api->pm25Value24=$cols['pm25Value24'];
+                        $api->khaiValue=$cols['khaiValue'];
+                        $api->khaiGrade=$cols['khaiGrade'];
+                        $api->so2Grade=$cols['so2Grade'];
+                        $api->coGrade=$cols['coGrade'];
+                        $api->o3Grade=$cols['o3Grade'];
+                        $api->no2Grade=$cols['no2Grade'];
+                        $api->pm10Grade=$cols['pm10Grade'];
+                        $api->pm25Grade=$cols['pm25Grade'];
+                        $api->pm10Grade1h=$cols['pm10Grade1h'];
+                        $api->pm25Grade1h=$cols['pm25Grade1h'];
+                        $api->save();
+                        
+                    }else{
+                        Log::info("ERR>Invalid Station Name > ".$cityName."/".$today."/".$cols['stationName']);
+                    }
+                }
+            }
+            Log::info('SCH KairspecMsrstnAll ['.$cityName.'] Res>OK');
+
+
+
+            //  API - 전체 측정소 목록 (KairspecCtprvnRltmMesureDnsty) - 종료
         }        
     }
 }
