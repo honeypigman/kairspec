@@ -15,7 +15,8 @@ mix.styles([
     'resources/assets/css/bootstrap.min.css',
     'resources/assets/css/docs.css',
     'resources/assets/css/chacha.css',
-    'resources/assets/css/dashboard.css'
+    'resources/assets/css/dashboard.css',
+    'resources/assets/css/map.css'
 ], 'public/css/common.css').version();
 
 mix.scripts([
