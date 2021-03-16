@@ -29,12 +29,12 @@
 - - MongoDB기준 = ( db.KairspecApiMsrstnAll.findOne( { $and: [ {'dmX':{$lte:'37.95994899497005'}}, {'dmY':{$lte:'124.72368552268148'}}, {'today':'2021-03-14'} ] } ) )
 - [X] 기능 - 차트 등록
 - [X] 기능 - 스케쥴 등록
-- ```php
-- 1) KairSpec 전체 측정소 데이터 획득
-- schedule->job(new \App\Jobs\KairspecMsrstnAll)->daily();
-- 2) KairSpec 시도별 측정소 정보 획득
-- schedule->job(new \App\Jobs\KairspecStationInfoAll)->hourlyAt(5);
-- ```
+```php
+1) KairSpec 전체 측정소 데이터 획득
+$schedule->job(new \App\Jobs\KairspecMsrstnAll)->daily();
+2) KairSpec 시도별 측정소 정보 획득
+$schedule->job(new \App\Jobs\KairspecStationInfoAll)->hourlyAt(5);
+```
 
 ## How to Use
 > 1) 프로젝트 경로로 이동
