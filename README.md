@@ -19,14 +19,14 @@
 - [X] 기능 - 전체 측정소정보 목록(getMsrstnList) 데이터 응답받아 받아 dmXY 값을 기준으로 전체측정소 데이터 스케쥴러 작성 및 마커 표기
 - [X] 기능 - 시도별 실시간 측정정보 조회(getCtprvnRltmMesureDnsty)
 - [X] 기능 - 매트릭스 4단계 구현 ( 한국기준 / WHO기준 )
-- - 환경부 기준 4단계로 적용 [환경부-미세먼지 농도별 예보 등급](https://www.me.go.kr/mamo/web/index.do?menuId=16201)
+- 환경부 기준 4단계로 적용 [환경부-미세먼지 농도별 예보 등급](https://www.me.go.kr/mamo/web/index.do?menuId=16201)
 - [X] 기능 - Operatio에 따른 전문송수신 공통화
 - [X] 기능 - RestAPI 형태의 공통인터페이스 작성
 - [X] 기능 - 전문별 데이터 적재 세분화
 - [X] 기능 - 측정소별 통계
 - [X] 기능 - 측정소 데이터 획득방안 협의
 - [X] 기능 - 획득한 gps 정보를 기준으로 서버내 저장된 db를 통해, 측정소정보 획득 방안 - 위도/경도 정보를 기준으로 측정소 찾기
-- - MongoDB기준 = ( db.KairspecApiMsrstnAll.findOne( { $and: [ {'dmX':{$lte:'37.95994899497005'}}, {'dmY':{$lte:'124.72368552268148'}}, {'today':'2021-03-14'} ] } ) )
+- MongoDB기준 = ( db.KairspecApiMsrstnAll.findOne( { $and: [ {'dmX':{$lte:'37.95994899497005'}}, {'dmY':{$lte:'124.72368552268148'}}, {'today':'2021-03-14'} ] } ) )
 - [X] 기능 - 차트 등록
 - [X] 기능 - 스케쥴 등록
 ```php
