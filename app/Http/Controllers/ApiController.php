@@ -13,6 +13,8 @@ use DB;
 use Func;
 use Form;
 use App\KairspecApiHis;
+use App\KairspecApiMsrstnList;
+use App\KairspecApiStationList;
 
 class ApiController extends Controller
 {
@@ -67,6 +69,69 @@ class ApiController extends Controller
         $result = Form::xmlToJson($result);
 
         return $result;
+    }
+
+    public function findStation(Request $request, $dmX, $dmY)
+    {
+        if( empty($dmX) || empty($dmX) ){
+            abort(404);
+        }
+
+        $today = date('Y-m-d');
+
+        $list = KairspecApiMsrstnList::where('today', '=', $today)
+        ->where('dmX', '<=', $dmX)
+        ->where('dmY', '<=', $dmY)
+        ->orderBy('today', 'desc')
+        ->take(1)
+        ->get();
+
+        $_MARKER = Array();
+        foreach($list as $datas){
+            // Set Grade Info
+            $getInfo = Func::getGrade($datas['pm10Value'], $datas['pm25Value']);
+
+            $_MARKER['grade'] = $getInfo['grade'];
+            $_MARKER['msg'] = $getInfo['msg'];
+            $_MARKER['city'] = $datas['city']; 
+            $_MARKER['stationName'] = $datas['stationName'];
+            $_MARKER['dmX'] = $datas['dmX'];
+            $_MARKER['dmY'] = $datas['dmY'];
+            $_MARKER['mesure_date'] = $datas['mesure_time'];
+            $_MARKER['mesure_pm10'] = ($datas['pm10Value']?$datas['pm10Value']:'x');  //  미세먼지 농도
+            $_MARKER['mesure_pm25'] = ($datas['pm25Value']?$datas['pm25Value']:'x');  //  초미세먼지 농도
+        }
+        
+        return json_encode($_MARKER);
+    }
+
+    public function findStationTimeflow(Request $request, $date, $city, $station)
+    {
+        if( empty($date) || empty($city) || empty($station) ){
+            abort(404);
+        }
+
+        $today = date('Y-m-d');
+
+        $list = KairspecApiStationList::where('date', '=', $date)
+        ->where('city', $city)
+        ->where('stationName', $station)
+        ->orderBy('time', 'asc')
+        ->get();
+
+        $cnt=1;
+        $_TIME = Array();
+        foreach($list as $datas){
+            // Set Grade Info
+            $getInfo = Func::getGrade($datas['pm10Value'], $datas['pm25Value']);
+            $_TIME[$cnt]['time'] =substr($datas['time'],0,2);
+            $_TIME[$cnt]['data']['grade'] = $getInfo['grade'];
+            $_TIME[$cnt]['data']['pm10'] = ($datas['pm10Value']?$datas['pm10Value']:'x');  //  미세먼지 농도
+            $_TIME[$cnt]['data']['pm25'] = ($datas['pm25Value']?$datas['pm25Value']:'x');  //  초미세먼지 농도
+            $cnt++;
+        }
+        
+        return json_encode($_TIME);
     }
 
     /**

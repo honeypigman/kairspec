@@ -15,7 +15,6 @@
 - [X] 카테고리 - 전문별 요청/응답 화면구현
 - [X] 카테고리 - 전문별 데이터 적재내역
 - [X] 기능 - 지도 API선정 :: 네이버 API활용
-- [ ] 보류::기능 - TM좌표변환 // 중부원점
 - [X] 기능 - 지도 마커 표기
 - [X] 기능 - 전체 측정소정보 목록(getMsrstnList) 데이터 응답받아 받아 dmXY 값을 기준으로 전체측정소 데이터 스케쥴러 작성 및 마커 표기
 - [X] 기능 - 시도별 실시간 측정정보 조회(getCtprvnRltmMesureDnsty)
@@ -26,7 +25,15 @@
 - [X] 기능 - 전문별 데이터 적재 세분화
 - [X] 기능 - 측정소별 통계
 - [X] 기능 - 측정소 데이터 획득방안 협의
-- [ ] 이슈 - 획득한 gps 정보를 기준으로 서버내 저장된 db를 통해, 측정소정보 획득 방안
+- [X] 기능 - 획득한 gps 정보를 기준으로 서버내 저장된 db를 통해, 측정소정보 획득 방안 - 위도/경도 정보를 기준으로 측정소 찾기
+- - MongoDB기준 = ( db.KairspecApiMsrstnAll.findOne( { $and: [ {'dmX':{$lte:'37.95994899497005'}}, {'dmY':{$lte:'124.72368552268148'}}, {'today':'2021-03-14'} ] } ) )
+- [X] 기능 - 스케쥴 등록
+- ```php
+- // KairSpec 전체 측정소 데이터 획득
+- $schedule->job(new \App\Jobs\KairspecMsrstnAll)->daily();
+- // KairSpec 시도별 측정소 정보 획득
+- $schedule->job(new \App\Jobs\KairspecStationInfoAll)->hourlyAt(5);
+- ```
 
 ## How to Use
 > 1) 프로젝트 경로로 이동
@@ -126,6 +133,7 @@
 - NoSQL - MongoDB
 - Flip Card Animation Css @cjcu
 - API - [Naver Maps](https://github.com/navermaps/maps.js.ncp/blob/master/examples/map/1-map-simple.html).
+- Geolocation API [Geolocation API](https://developer.mozilla.org/ko/docs/Web/API/Geolocation_API/Using_the_Geolocation_API).
 
 ## License
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

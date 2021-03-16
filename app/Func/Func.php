@@ -99,7 +99,7 @@ class Func
     }
 
     /**
-     * set Select Form
+     * Set Select Form
      *  PARAM[1] : set Name
      *  PARAM[2] : set Array
      */
@@ -111,6 +111,74 @@ class Func
             $result.= "<option value='".$k."'>".$v."::".$k."</option>";
         }
         $result.= "</select>";
+
+        return $result;
+    }
+
+    /**
+     * Set PM Grade
+     *  PARAM[1] : pm10
+     *  PARAM[2] : pm25
+     */
+    static function getGrade($pm10, $pm25)
+    {
+        // PM_Matrix
+        //  - https://www.me.go.kr/mamo/web/index.do?menuId=16201
+        $_PM[10][1]['MIN']=0;
+        $_PM[10][1]['MAX']=30;
+        $_PM[10][2]['MIN']=31;
+        $_PM[10][2]['MAX']=80;
+        $_PM[10][3]['MIN']=81;
+        $_PM[10][3]['MAX']=150;
+        $_PM[10][4]['MIN']=151;
+        $_PM[10][4]['MAX']=999;
+        $_PM[25][1]['MIN']=0;
+        $_PM[25][1]['MAX']=15;
+        $_PM[25][2]['MIN']=16;
+        $_PM[25][2]['MAX']=35;
+        $_PM[25][3]['MIN']=36;
+        $_PM[25][3]['MAX']=75;
+        $_PM[25][4]['MIN']=76;
+        $_PM[25][4]['MAX']=999;
+        
+        $grade = 0;
+        $msg = '';
+        $getGrade[10]=0;
+        $getGrade[25]=0;
+
+        foreach($_PM['10'] as $grade => $matrix){
+            $is=false;
+            if( $is == false && ($pm10>=$matrix['MIN'] && $matrix['MAX'] >= $pm10) ){
+                $is = true;
+            }
+            if($is){
+                $getGrade[10] = $grade;
+            }
+        }
+        foreach($_PM['25'] as $grade => $matrix){
+            $is=false;
+            if( $is == false && ($pm25>=$matrix['MIN'] && $matrix['MAX'] >= $pm25) ){
+                $is = true;
+            }
+            if($is){
+                $getGrade[25] = $grade;
+            }
+        }
+
+        $grade = max($getGrade);
+        if( $pm10=='-' && $pm25=='-' ){
+            $grade=0;
+        }        
+        
+        // Grade Message
+        $_MSG[0]="정보가 없어요..";
+        $_MSG[1]="좋음";
+        $_MSG[2]="보통";
+        $_MSG[3]="나쁨";
+        $_MSG[4]="매우나쁨";
+        
+        $result['grade'] = $grade;
+        $result['msg'] = $_MSG[$grade];
 
         return $result;
     }

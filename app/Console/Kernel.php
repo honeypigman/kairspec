@@ -44,11 +44,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
-
         // KairSpec 전체 측정소 데이터 획득
-        $schedule->job(new \App\Jobs\KairspecMsrstnAll)->everyMinute();
-
+        $schedule->job(new \App\Jobs\KairspecMsrstnAll)->daily();
+        // KairSpec 시도별 측정소 정보 획득
+        $schedule->job(new \App\Jobs\KairspecStationInfoAll)->hourlyAt(15);
+        //$schedule->job(new \App\Jobs\KairspecStationInfoAll)->everyMinute();
     }
 
     /**
