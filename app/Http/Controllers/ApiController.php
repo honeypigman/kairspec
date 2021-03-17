@@ -86,6 +86,22 @@ class ApiController extends Controller
         ->take(1)
         ->get();
 
+        // MongoDB - 비교(Comparison) 연산자
+        // operator	설명
+        // $eq	(equals) 주어진 값과 일치하는 값
+        // $gt	(greater than) 주어진 값보다 큰 값
+        // $gte	(greather than or equals) 주어진 값보다 크거나 같은 값
+        // $lt	(less than) 주어진 값보다 작은 값
+        // $lte	(less than or equals) 주어진 값보다 작거나 같은 값
+        // $ne	(not equal) 주어진 값과 일치하지 않는 값
+        // $in	주어진 배열 안에 속하는 값
+        // $nin	주어빈 배열 안{{에 속하지 않는 값
+
+        // db.KairspecApiMsrstnList.find({'dmX':{$eq:'37.544656'}, 'dmY':{$eq:'126.835094'} ,'today':'2021-03-14'}).pretty()
+        // db.KairspecApiMsrstnList.find( { $and: [ {'dmX':{$lte:'37.546362099999996'}}, {'dmY':{$lte:'126.86998949999999'}}, {'today':'2021-03-14'} ] } ).pretty()
+        // db.KairspecApiMsrstnList.findOne( { $and: [ {'dmX':{$lte:'37.95994899497005'}}, {'dmY':{$lte:'124.72368552268148'}}, {'today':'2021-03-14'} ] } )
+        //  - 검색 : 37.168443, 126.9829
+        // 	- 금암로 : 37.171081, 127.052049
         $_MARKER = Array();
         foreach($list as $datas){
             // Set Grade Info
