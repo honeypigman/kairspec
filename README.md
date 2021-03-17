@@ -35,6 +35,8 @@ $schedule->job(new \App\Jobs\KairspecMsrstnAll)->daily();
 2) KairSpec 시도별 측정소 정보 획득
 $schedule->job(new \App\Jobs\KairspecStationInfoAll)->hourlyAt(5);
 ```
+- [X] 기능 - 주소검색
+- [ ] 기능 - 좌표값을 통한 가까운 측정소 찾기 로직 개선
 
 ## How to Use
 > 1) 프로젝트 경로로 이동
