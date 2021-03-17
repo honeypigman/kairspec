@@ -124,19 +124,23 @@ function setChartStationTimeFlow(date, city, station){
                 obj_pm10.push(this['data']['pm10']);
                 obj_pm25.push(this['data']['pm25']);
             });
-
+            
+            // Chart reset            
+            $('#myChart').remove();
+            $('.markerReport').append('<canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" height="290" style="display: block;"></canvas>');
+            
             // Set Chart
             var lineChartData = {
                 labels: obj_label,
                 datasets: [{
-                    label: '미세먼지',
+                    label: '미세',
                     borderColor: 'rgba(255, 206, 86)',
 				    backgroundColor: 'rgba(255, 206, 86)',
                     fill: false,
                     data: obj_pm10,
                     yAxisID: 'y-axis-1',
                 }, {
-                    label: '초미세먼지',
+                    label: '초미',
                     borderColor: 'rgba(255, 99, 132)',
 				    backgroundColor: 'rgba(255, 99, 132)',
                     fill: false,
@@ -148,32 +152,14 @@ function setChartStationTimeFlow(date, city, station){
             var myChart = new Chart(ctx, {
                 type: 'line',
                 data: lineChartData,
-                // {
-                //     labels: obj_label,
-                //     datasets: [{
-                //         label: '미세먼지',
-                //         borderColor: window.chartColors.red,
-                //         backgroundColor: window.chartColors.red,        
-                //         data: obj_pm10,
-                //         // pointBackgroundColor: [
-                //         //     'rgba(255, 99, 132)',
-                //         //     'rgba(54, 162, 235)',
-                //         //     'rgba(255, 206, 86)',
-                //         //     'rgba(75, 192, 192)',
-                //         //     'rgba(153, 102, 255)',
-                //         //     'rgba(255, 159, 64)'
-                //         // ],
-                //         borderWidth: 1
-                //     }]
-                // },
                 options: {
-                    responsive: true,
-					hoverMode: 'index',
-					stacked: false,
                     title: {
 						display: true,
 						text: date
 					},
+                    responsive: true,
+					hoverMode: 'index',
+					stacked: false,
                     scales: {
 						yAxes: [{
 							type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -194,10 +180,9 @@ function setChartStationTimeFlow(date, city, station){
 					}
                 }
             });
-
         },
         error : function(error){
-            console.log('Error>'+error);
+            console.log('SetChartStationTimeFlow Error>'+error);
         }
     });    
 
@@ -267,7 +252,7 @@ function findStation()
                 click = true;
             },
             error : function(error){
-                console.log('Error>'+error);
+                console.log('FindStation Error>'+error);
                 click=false;
             }
         });
