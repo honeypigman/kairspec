@@ -77,14 +77,37 @@ class ApiController extends Controller
             abort(404);
         }
 
+        $distance='';
         $today = date('Y-m-d');
-
-        $list = KairspecApiMsrstnList::where('today', '=', $today)
-        ->where('dmX', '<=', $dmX)
-        ->where('dmY', '<=', $dmY)
-        ->orderBy('today', 'desc')
-        ->take(1)
+        $all = KairspecApiMsrstnList::where('today', '=', $today)
         ->get();
+
+        foreach($all as $datas){
+
+            $setDistance = Func::getDistance($dmX, $dmY, $datas['dmX'], $datas['dmY']);
+
+            // $_DATA[$datas['_id']]['city'] = $datas['city'];
+            // $_DATA[$datas['_id']]['station'] = $datas['stationName'];
+            // $_DATA[$datas['_id']]['distance'] = $setDistance;
+
+            if(empty($distance)){
+                $distance = $setDistance;
+            }
+
+            if($distance>$setDistance){
+                unset($_DATA);   
+                $_DATA['city'] = $datas['city'];
+                $_DATA['stationName'] = $datas['stationName'];
+                $_DATA['mesure_time'] = $datas['mesure_time'];
+                $_DATA['pm10Value'] = ($datas['pm10Value']?$datas['pm10Value']:'x');  //  미세먼지 농도
+                $_DATA['pm25Value'] = ($datas['pm25Value']?$datas['pm25Value']:'x');  //  초미세먼지 농도
+                $_DATA['dmX'] = $datas['dmX'];
+                $_DATA['dmY'] = $datas['dmY'];
+                $_DATA['distance'] = $setDistance;
+
+                $distance = $setDistance;
+            }
+        }
 
         // MongoDB - 비교(Comparison) 연산자
         // operator	설명
@@ -102,21 +125,19 @@ class ApiController extends Controller
         // db.KairspecApiMsrstnList.findOne( { $and: [ {'dmX':{$lte:'37.95994899497005'}}, {'dmY':{$lte:'124.72368552268148'}}, {'today':'2021-03-14'} ] } )
         //  - 검색 : 37.168443, 126.9829
         // 	- 금암로 : 37.171081, 127.052049
-        $_MARKER = Array();
-        foreach($list as $datas){
-            // Set Grade Info
-            $getInfo = Func::getGrade($datas['pm10Value'], $datas['pm25Value']);
+        // Set Grade Info
+        $getInfo = Func::getGrade($_DATA['pm10Value'], $_DATA['pm25Value']);
 
-            $_MARKER['grade'] = $getInfo['grade'];
-            $_MARKER['msg'] = $getInfo['msg'];
-            $_MARKER['city'] = $datas['city']; 
-            $_MARKER['stationName'] = $datas['stationName'];
-            $_MARKER['dmX'] = $datas['dmX'];
-            $_MARKER['dmY'] = $datas['dmY'];
-            $_MARKER['mesure_date'] = $datas['mesure_time'];
-            $_MARKER['mesure_pm10'] = ($datas['pm10Value']?$datas['pm10Value']:'x');  //  미세먼지 농도
-            $_MARKER['mesure_pm25'] = ($datas['pm25Value']?$datas['pm25Value']:'x');  //  초미세먼지 농도
-        }
+        $_MARKER = Array();
+        $_MARKER['grade'] = $getInfo['grade'];
+        $_MARKER['msg'] = $getInfo['msg'];
+        $_MARKER['city'] = $_DATA['city']; 
+        $_MARKER['stationName'] = $_DATA['stationName'];
+        $_MARKER['dmX'] = $_DATA['dmX'];
+        $_MARKER['dmY'] = $_DATA['dmY'];
+        $_MARKER['mesure_date'] = $_DATA['mesure_time'];
+        $_MARKER['mesure_pm10'] = ($_DATA['pm10Value']?$_DATA['pm10Value']:'x');  //  미세먼지 농도
+        $_MARKER['mesure_pm25'] = ($_DATA['pm25Value']?$_DATA['pm25Value']:'x');  //  초미세먼지 농도
         
         return json_encode($_MARKER);
     }

@@ -46,6 +46,7 @@ class Kernel extends ConsoleKernel
     {
         // KairSpec 전체 측정소 데이터 획득
         $schedule->job(new \App\Jobs\KairspecMsrstnAll)->daily();
+        // $schedule->job(new \App\Jobs\KairspecMsrstnAll)->everyMinute();
         // KairSpec 시도별 측정소 정보 획득
         $schedule->job(new \App\Jobs\KairspecStationInfoAll)->hourlyAt(15);
         //$schedule->job(new \App\Jobs\KairspecStationInfoAll)->everyMinute();

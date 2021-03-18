@@ -36,7 +36,8 @@ $schedule->job(new \App\Jobs\KairspecMsrstnAll)->daily();
 $schedule->job(new \App\Jobs\KairspecStationInfoAll)->hourlyAt(5);
 ```
 - [X] 기능 - 주소검색
-- [ ] 기능 - 좌표값을 통한 가까운 측정소 찾기 로직 개선
+- [X] 기능 - 좌표값을 통한 가까운 측정소 찾기 로직 개선
+- [ ] 마무리 - 에러코드 및 기능점검
 
 ## How to Use
 > 1) 프로젝트 경로로 이동
@@ -137,6 +138,10 @@ $schedule->job(new \App\Jobs\KairspecStationInfoAll)->hourlyAt(5);
 - Flip Card Animation Css @cjcu
 - API - [Naver Maps](https://github.com/navermaps/maps.js.ncp/blob/master/examples/map/1-map-simple.html).
 - Geolocation API [Geolocation API](https://developer.mozilla.org/ko/docs/Web/API/Geolocation_API/Using_the_Geolocation_API).
+- Haversine Distance Reference
+- - https://kayuse88.github.io/haversine/
+- - https://www.funyphp.com/archive/php/83?sst=wr_datetime&sod=desc&sop=and
+
 
 ## License
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

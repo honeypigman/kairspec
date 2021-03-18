@@ -182,4 +182,30 @@ class Func
 
         return $result;
     }
+
+     /**
+     * @brif get From to Distance
+     * @PARAM[1] : Latitude Point 1
+     * @PARAM[2] : Longitude Point 1
+     * @PARAM[3] : Latitude Point 2
+     * @PARAM[4] : Longitude Point 2
+     * @PARAM[5] : Earth Raduis
+     * @return distance KM
+     * @dec 지구는 구 형태이기 때문에 점과 점사이의 직선 거리를 구하게되면 오차가 발생한다. 이때, Haversine 공식을 사용하여, 위도/경도의 구 형태에서의 두 점사이의 거리를 구한다.
+     */
+    static function getDistance($x1, $y1, $x2, $y2, $radius = 6371000)
+    {
+        $distance = 0;
+        $lat1 = deg2rad($x1);
+        $lon1 = deg2rad($y1);
+        $lat2 = deg2rad($x2);
+        $lon2 = deg2rad($y2);
+
+        $sinDeltaLat = sin(($lat2 - $lat1)/2);
+        $sinDeltaLon = sin(($lon2 - $lon1)/2);
+
+        $sqr = 2 * asin(sqrt(pow($sinDeltaLat, 2) + cos($lat1) * cos($lat2) * pow($sinDeltaLon, 2)));
+        $distance = $sqr * $radius;
+        return $distance;
+    }
 }

@@ -35,14 +35,17 @@
   </div>
 
   <div class="serach-bar">
-    <input type="text" class="form-control" id="address" placeholder='장소를 입력해주세요'>
-    <span class="input-group-text" id="submit">검색</span>
+    <div class="alert alert-danger d-none" id="search-alert" role="alert">
+      <img src="/img/icon/alert-triangle.svg"/> <span id="search-alert-msg"></span>
+    </div>
+    <div class="addr-bar">
+      <input type="text" class="form-control" id="address" placeholder='주소를 입력해주세요. (읍/면/동)'>
+      <span class="input-group-text" id="submit">검색</span>
+    </div>
   </div>
 
-  <script src="/js/script.js"></script>
   <script src="/js/jquery.ui.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
-  <script src="/js/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
   <!-- Naver Api Maps Start -->
   <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId={{ env('NAVER_MAPS_CLIENT_ID') }}&submodules=geocoder"></script>
@@ -57,7 +60,7 @@
       // param[2] : 메세지
       // param[3] : 측정일
       // param[4] : 경도
-      // param[5] : 위도
+      // param[5] : 위도f
       // param[6] : 미세먼지 농도
       // param[7] : 초미세먼지 농도
       // param[8] : 시도명

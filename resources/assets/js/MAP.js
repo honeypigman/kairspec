@@ -16,8 +16,13 @@ $(document).ready(function(){
         markerInfoDetail($(this));
     });
 
+    // Marker Clicked
+    $(".marker-pick").parent('div').css("z-index", "-999");
+
     // Marker Detail Close
     $(document).on('click', '.btnClose', function(e) {
+        // Reset
+        $(".marker-pick").removeClass();
         $(".markerDetail").html('');
     });
 
@@ -46,7 +51,6 @@ var map = new naver.maps.Map(mapDiv, {
 });
 
 function markerInfoDetail(selector){
-
     // Marker Detail Setting
     $('.markerDetail').append('<div id="markerDetail" class="alert alert-success d-none" role="alert" ><h4>[<span id="city">[시도명]</span>]<span id="stationName">[측정소명]</span></h4><div class="text-center"><h5><span class="badge bg-light text-dark w-100 mb-2" id="msg">[메세지]</span></h5></div><div class="row"><div class="col-9"><div class="text-start">미세먼지 <span id="pm10">[미세먼지]</span> ㎍/m³</div><div class="text-start">초미세먼지 <span id="pm25">[초미세먼지]</span> ㎍/m³</div></div><div class="col-3" style="margin-top:-8px; margin-left:-20px;"><img id="emoticonDetail" src="/img/grade0.png"></div></div><div class="markerReport"><canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" height="290" style="display: block;"></canvas></div><button type="button" class="btn btn-light btn-sm w-100 btnClose" data-bs-dismiss="toast">닫기</button></div>');
     
@@ -58,6 +62,7 @@ function markerInfoDetail(selector){
     var city = $(selector).find('span.city').data('city');
     var stationName = $(selector).find('span.station').data('station');
 
+    // Set Detail Info
     $(selector).find('span.marker-bg').addClass('bg_'+grade);
     $("#markerDetail").removeClass();
     $("#markerDetail").addClass('alert alert-success d-block');
@@ -72,7 +77,7 @@ function markerInfoDetail(selector){
     $("#emoticonDetail").attr('src', '/img/'+grade+'.png');
 
     // Set Chart
-    setChartStationTimeFlow(date, city, stationName);    
+    setChartStationTimeFlow(date, city, stationName);
 }
 
 
@@ -95,10 +100,13 @@ function addMarker(grade, msg, date, x, y, pm10=0, pm25=0, city, station){
         }
     };
     
-    // Marker Zoom-In
     var marker = new naver.maps.Marker(markerOptions);
     marker.setMap(map);
+    
+    // Marker Zoom-In
     naver.maps.Event.addListener(marker, 'click', function() {        
+        // Reset
+        $(".marker-pick").removeClass();
         zoomIn(position);
     });
 }
@@ -107,10 +115,25 @@ function zoomIn(position){
     var delta = 0,
         zoom = map.getZoom();
 
+    var markerOptions = 
+    {
+        position: position,
+        icon: 
+        {
+            content: '<span class="marker-pick"></span>',
+            size: new naver.maps.Size(50, 50),
+            origin: new naver.maps.Point(0, 0),
+            anchor: new naver.maps.Point(11, 34)
+        }
+    };
+    
+    var marker = new naver.maps.Marker(markerOptions);
+    marker.setMap(map);
+
     // Marker Position Center
     map.setCenter(position);
 
-    delta = 13 - zoom;
+    delta = 12 - zoom;
     map.zoomBy(delta, position, true);
 }
 
@@ -208,8 +231,6 @@ function findStation(div='AUTO', x=null, y=null)
             x  = position.coords.latitude;
             y = position.coords.longitude;
         }
-
-        console.log(x+'//'+y);
         
         // Spinner
         $("#find-me").text('');
@@ -225,7 +246,6 @@ function findStation(div='AUTO', x=null, y=null)
             success : function(rs){
                 //var jsonStringify = JSON.stringify(rs);
 
-                console.log(rs);
                 if(rs.mesure_date){
                     var date = rs.mesure_date;
                     var grade = rs.grade;
@@ -236,8 +256,8 @@ function findStation(div='AUTO', x=null, y=null)
                     var pm25 = rs.mesure_pm25;
                     
                     // Set Marker Detail
-                    $("#markerDetail").removeClass();
-                    $("#markerDetail").addClass('alert alert-success d-block');
+                    $(".markerDetail").empty();
+                    $('.markerDetail').append('<div id="markerDetail" class="alert alert-success d-block" role="alert" ><h4>[<span id="city">[시도명]</span>]<span id="stationName">[측정소명]</span></h4><div class="text-center"><h5><span class="badge bg-light text-dark w-100 mb-2" id="msg">[메세지]</span></h5></div><div class="row"><div class="col-9"><div class="text-start">미세먼지 <span id="pm10">[미세먼지]</span> ㎍/m³</div><div class="text-start">초미세먼지 <span id="pm25">[초미세먼지]</span> ㎍/m³</div></div><div class="col-3" style="margin-top:-8px; margin-left:-20px;"><img id="emoticonDetail" src="/img/grade0.png"></div></div><div class="markerReport"><canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" height="290" style="display: block;"></canvas></div><button type="button" class="btn btn-light btn-sm w-100 btnClose" data-bs-dismiss="toast">닫기</button></div>');
                     $("#markerDetail").addClass('bg_grade'+grade);
                     
                     // Set station Content
@@ -248,6 +268,25 @@ function findStation(div='AUTO', x=null, y=null)
                     $("#stationName").empty().text(stationName);
                     $("#emoticonDetail").attr('src', '/img/grade'+grade+'.png');
 
+                    var marker = new naver.maps.Marker({
+                        map: map,
+                        position: new naver.maps.LatLng(x, y)
+                    });
+                    
+                    // Set Poly Line
+                    var polyline = new naver.maps.Polyline({
+                        map: map,
+                        path: [
+                            new naver.maps.LatLng(x, y),
+                            new naver.maps.LatLng(rs.dmX, rs.dmY)
+                        ],
+                        strokeColor: '#5347AA',
+                        strokeStyle: 'longdash',
+                        strokeOpacity: 0.5,
+                        strokeWeight: 2
+                    });
+
+                    // Set Chart
                     setChartStationTimeFlow(date, city, stationName)
 
                     // Auto Zoom
@@ -281,41 +320,29 @@ map.setCursor('pointer');
 function searchAddressToCoordinate(address) 
 {
     naver.maps.Service.geocode({
-    query: address
-    }, function(status, response) {
+        query: address
+        }, function(status, response) {
 
-    console.log(status);
-    console.log(response);
-
-    if (status === naver.maps.Service.Status.ERROR) {
-        if (!address) {
-        return alert('Geocode Error, Please check address');
+        if (status === naver.maps.Service.Status.ERROR) {
+            if (!address) {
+            //return alert('Geocode Error, Please check address');
+            }
+            //return alert('Geocode Error, address:' + address);
         }
-        return alert('Geocode Error, address:' + address);
-    }
 
-    if (response.v2.meta.totalCount === 0) {
-        return alert('No result.');
-    }
+        if (response.v2.meta.totalCount === 0) {
+            setAlert('검색한 주소 정보가 존재하지 않습니다!');
+        }
 
-    var htmlAddresses = [],
-        item = response.v2.addresses[0],
-        position = new naver.maps.Point(item.x, item.y);
+        //if((typeof x != "undefined")||(typeof y != "undefined"))
+        {
 
-    if (item.roadAddress) {
-        htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
-    }
+            var htmlAddresses = [],
+                item = response.v2.addresses[0],
+                position = new naver.maps.Point(item.x, item.y);
 
-    if (item.jibunAddress) {
-        htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
-    }
-
-    if (item.englishAddress) {
-        htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
-    }
-
-    zoomIn(position);
-    //findStation('SEARCH', item.x, item.y);
+            findStation('SEARCH', item.y, item.x);
+        }
     });
 }
 
@@ -333,10 +360,25 @@ function initGeocoder() {
     });
 
     $('#submit').on('click', function(e) {
-    e.preventDefault();
-    searchAddressToCoordinate($('#address').val());
+        if(!$('#address').val()){
+            setAlert('검색할 주소 정보를 입력해주세요.');
+            $('#address').focus();
+            return false;
+        }
+        e.preventDefault();
+        searchAddressToCoordinate($('#address').val());
     });
 }
 
 naver.maps.onJSContentLoaded = initGeocoder;
 naver.maps.Event.once(map, 'init_stylemap', initGeocoder);
+
+function setAlert(msg){
+    $("#search-alert").removeClass('d-none');
+    $("#search-alert-msg").text(msg);
+    setInterval(function(){
+        $("#search-alert").addClass('d-none');
+        $("#search-alert-msg").empty();
+    }, 3000);
+
+}

@@ -11,7 +11,7 @@
   margin-top: 12px;
   padding: 3px;
   line-height: 0;
-  border-radius: 100em;
+  border-radius: 50%;
   background-color: rgba(90, 145, 235);
   z-index: 999;
 }
@@ -119,8 +119,7 @@
 
 .serach-bar{
   position: absolute;
-  display: flex;
-  float: right;
+  width: 300px;
   right: 5px;
   bottom: 25px;
 }
@@ -170,4 +169,31 @@
 .btnClose{
   margin-top:-40px;
   margin-bottom:-20px;
+}
+
+#submit{
+  cursor:pointer;
+}
+
+.alert{
+  padding: 0.5rem 0.5rem
+}
+
+.alert-danger{
+  margin-bottom: 2px;
+}
+
+.addr-bar{
+  display:flex;
+}
+
+.marker-pick{
+  margin-top: 0px;
+  margin-left: -12px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  border-radius: 50%;
+  border: dotted 3px rgba(255, 0, 0);
 }
