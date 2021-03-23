@@ -30,14 +30,17 @@
 - [X] 기능 - 차트 등록
 - [X] 기능 - 스케쥴 등록
 ```php
+# Laravel Scheduler
+* * * * * cd /project-path && php artisan schedule:run >> ./storage/logs/crond.log 2>&1
+
 1) KairSpec 전체 측정소 데이터 획득
-$schedule->job(new \App\Jobs\KairspecMsrstnAll)->daily();
+$schedule->command('kairspec:getMsrstnInfoAll')->daily();
 2) KairSpec 시도별 측정소 정보 획득
-$schedule->job(new \App\Jobs\KairspecStationInfoAll)->hourlyAt(5);
+$schedule->command('kairspec:getStationInfoAll')->hourlyAt(15);
 ```
 - [X] 기능 - 주소검색
 - [X] 기능 - 좌표값을 통한 가까운 측정소 찾기 로직 개선
-- [ ] 마무리 - 에러코드 및 기능점검
+- [X] 마무리 - 에러코드 및 기능점검
 
 ## How to Use
 > 1) 프로젝트 경로로 이동
@@ -141,12 +144,11 @@ $schedule->job(new \App\Jobs\KairspecStationInfoAll)->hourlyAt(5);
 - Haversine Distance Reference
 - - https://kayuse88.github.io/haversine/
 - - https://www.funyphp.com/archive/php/83?sst=wr_datetime&sod=desc&sop=and
-
+- SSL [Let`s Encrypt](https://letsencrypt.org/ko/).
 
 ## License
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Contact Me
-- 오늘 역시 조금씩 꾸준하게 하자.
 - 소스리뷰 및 조언 언제나 환영합니다. 
 - honeypigman@gmail.com

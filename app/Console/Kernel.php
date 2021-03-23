@@ -33,7 +33,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\KairspecMsrstnAll::class,
+        \App\Console\Commands\KairspecStationInfoAll::class
     ];
 
     /**
@@ -45,11 +46,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // KairSpec 전체 측정소 데이터 획득
-        $schedule->job(new \App\Jobs\KairspecMsrstnAll)->daily();
-        // $schedule->job(new \App\Jobs\KairspecMsrstnAll)->everyMinute();
+        $schedule->command('kairspec:getMsrstnInfoAll')->daily();
         // KairSpec 시도별 측정소 정보 획득
-        $schedule->job(new \App\Jobs\KairspecStationInfoAll)->hourlyAt(15);
-        //$schedule->job(new \App\Jobs\KairspecStationInfoAll)->everyMinute();
+        $schedule->command('kairspec:getStationInfoAll')->hourlyAt(15);
     }
 
     /**

@@ -12,7 +12,7 @@ $(document).ready(function(){
         markerInfoDetail($(this));
     });
 
-    $(".marker").on('click', function(){
+    $(".marker").on('click', function(){        
         markerInfoDetail($(this));
     });
 
@@ -27,30 +27,31 @@ $(document).ready(function(){
     });
 
     // Find Me
-    let click=false;
     $("#find-me").on("click",function(){
         
-        //if(!click)
+        if(!click)
         {
             click=true;
-            var spinnerBtn= "<div class='spinner-border spinner-border-sm img-center' role='status'><span class='visually-hidden'>Loading...</span></div> ";
-            $(this).append(spinnerBtn);
             $(this).css('background-image', 'url("")');
+            $(this).append(spinnerBtn);
             
-            findStation();            
+            findStation();
         }
     });
 });
 
 
+let click=false;
 var initPoint = new naver.maps.LatLng(37.572025, 127.005028);
 var mapDiv = document.getElementById('map');
 var map = new naver.maps.Map(mapDiv, {
     center: initPoint,
     zoom: 5
 });
+var spinnerBtn= "<div class='spinner-border spinner-border-sm img-center' role='status'><span class='visually-hidden'>Loading...</span></div> ";
 
 function markerInfoDetail(selector){
+
     // Marker Detail Setting
     $('.markerDetail').append('<div id="markerDetail" class="alert alert-success d-none" role="alert" ><h4>[<span id="city">[시도명]</span>]<span id="stationName">[측정소명]</span></h4><div class="text-center"><h5><span class="badge bg-light text-dark w-100 mb-2" id="msg">[메세지]</span></h5></div><div class="row"><div class="col-9"><div class="text-start">미세먼지 <span id="pm10">[미세먼지]</span> ㎍/m³</div><div class="text-start">초미세먼지 <span id="pm25">[초미세먼지]</span> ㎍/m³</div></div><div class="col-3" style="margin-top:-8px; margin-left:-20px;"><img id="emoticonDetail" src="/img/grade0.png"></div></div><div class="markerReport"><canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" height="290" style="display: block;"></canvas></div><button type="button" class="btn btn-light btn-sm w-100 btnClose" data-bs-dismiss="toast">닫기</button></div>');
     
@@ -107,12 +108,13 @@ function addMarker(grade, msg, date, x, y, pm10=0, pm25=0, city, station){
     naver.maps.Event.addListener(marker, 'click', function() {        
         // Reset
         $(".marker-pick").removeClass();
-        zoomIn(position);
+        zoomIn(x, y);
     });
 }
 
-function zoomIn(position){
+function zoomIn(x, y){
     var delta = 0,
+        position = new naver.maps.LatLng(x, y),
         zoom = map.getZoom();
 
     var markerOptions = 
@@ -134,7 +136,7 @@ function zoomIn(position){
     map.setCenter(position);
 
     delta = 12 - zoom;
-    map.zoomBy(delta, position, true);
+    map.zoomBy(delta, new naver.maps.LatLng(x, (parseFloat(y)+parseFloat(0.029))), true);
 }
 
 function setChartStationTimeFlow(date, city, station){
@@ -290,9 +292,12 @@ function findStation(div='AUTO', x=null, y=null)
                     setChartStationTimeFlow(date, city, stationName)
 
                     // Auto Zoom
-                    zoomIn(new naver.maps.LatLng(rs.dmX, rs.dmY));
+                    zoomIn(rs.dmX, rs.dmY);
 
-                    click = true;
+                    // Spinner Reset
+                    spinner('submit', '검색');
+
+                    click = false;
                 }
             },
             error : function(error){
@@ -324,17 +329,20 @@ function searchAddressToCoordinate(address)
         }, function(status, response) {
 
         if (status === naver.maps.Service.Status.ERROR) {
-            if (!address) {
-            //return alert('Geocode Error, Please check address');
-            }
-            //return alert('Geocode Error, address:' + address);
+            setAlert('검색한 Geocode정보가 ['+address+']가 올바르지 않습니다.');
+            // Spinner Reset
+            spinner('submit', '검색');
+            return false;
         }
 
         if (response.v2.meta.totalCount === 0) {
-            setAlert('검색한 주소 정보가 존재하지 않습니다!');
+            setAlert('검색한 정보 ['+address+']가 올바르지 않습니다.');
+            // Spinner Reset
+            spinner('submit', '검색');
+            return false;
         }
 
-        //if((typeof x != "undefined")||(typeof y != "undefined"))
+        
         {
 
             var htmlAddresses = [],
@@ -348,15 +356,16 @@ function searchAddressToCoordinate(address)
 
 function initGeocoder() {
     if (!map.isStyleMapReady) {
-    return;
+        return;
     }
 
     $('#address').on('keydown', function(e) {
-    var keyCode = e.which;
+        var keyCode = e.which;
 
-    if (keyCode === 13) { // Enter Key
-        searchAddressToCoordinate($('#address').val());
-    }
+        if (keyCode === 13) { // Enter Key
+            spinner('submit');
+            searchAddressToCoordinate($('#address').val());
+        }
     });
 
     $('#submit').on('click', function(e) {
@@ -365,6 +374,10 @@ function initGeocoder() {
             $('#address').focus();
             return false;
         }
+        click=true;
+        
+        spinner('submit');
+
         e.preventDefault();
         searchAddressToCoordinate($('#address').val());
     });
@@ -379,6 +392,16 @@ function setAlert(msg){
     setInterval(function(){
         $("#search-alert").addClass('d-none');
         $("#search-alert-msg").empty();
-    }, 3000);
+    }, 5000);
 
+}
+
+function spinner(selector, reset=null){
+    $('#'+selector).text('');
+    $('#'+selector).append(spinnerBtn);
+
+    if(reset){
+        $('#'+selector).text('');
+        $('#'+selector).text('검색');
+    }
 }
